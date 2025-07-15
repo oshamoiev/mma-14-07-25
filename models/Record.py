@@ -3,11 +3,6 @@ from .Phone import Phone
 from .Birthday import Birthday
 
 
-# TODO: move to Birthday class __str__ method
-def formatDateCustom(date):
-    return date.value.strftime("%d.%m.%Y") if date is not None else "-"
-
-
 class Record:
     def __init__(self, name):
         self.name = Name(name)
@@ -47,9 +42,9 @@ class Record:
         self.birthday = Birthday(new_date)
 
     def show_birthday(self):
-        return formatDateCustom(self.birthday)
+        return self.birthday if self.birthday else "Birthday not set"
 
     def __str__(self):
         # Use get_phones method to get phone numbers
         phones_str = "; ".join(p.value for p in self.phones) if self.phones else "-"
-        return f"Contact >>> name: {self.name.value}, phones: {phones_str}, birthday: {formatDateCustom(self.birthday)}"
+        return f"Contact >>> name: {self.name.value}, phones: {phones_str}, birthday: {self.birthday if self.birthday else '-'}"

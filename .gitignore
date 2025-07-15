@@ -1,0 +1,24 @@
+# Ignore all __pycache__ directories
+**/__pycache__/
+
+# Ignore Python bytecode files
+*.py[cod]
+
+# Ignore virtual environments (if created in project)
+.venv/
+venv/
+
+# Ignore common system files
+.DS_Store
+Thumbs.db
+
+# Ignore test log files or temporary text artifacts
+*.log
+*.tmp
+
+# Ignore environment files (if using dotenv)
+.env
+
+# Ignore VS Code or JetBrains settings
+.vscode/
+.idea/

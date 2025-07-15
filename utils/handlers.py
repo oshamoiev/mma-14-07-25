@@ -44,7 +44,7 @@ def phone_contact(args, book: AddressBook):
     if record is None:
         return "No contact found!"
 
-    phones = record.find_phone()
+    phones = record.get_phone()
     return f"{name}'s phone numbers: {phones}"
 
 

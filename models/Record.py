@@ -9,12 +9,8 @@ class Record:
         self.phones = []
         self.birthday = None
 
-
-    # TODO: rename to get_phones
-    def find_phone(self):
-        if not self.phones:
-            return "-"
-        return "; ".join(phone.value for phone in self.phones)
+    def get_phone(self):
+        return "; ".join(phone.value for phone in self.phones) if self.phones else "-"
 
     def add_phone(self, new_phone):
         if any(phone.value == new_phone for phone in self.phones):
@@ -23,12 +19,13 @@ class Record:
         return True
 
     def edit_phone(self, old_phone, new_phone):
-        # TODO: use find_phone method?
-        for i, phone in enumerate(self.phones):
-            if phone.value == old_phone:
-                self.phones[i] = Phone(new_phone)
-                return True
-        return False
+        phone_to_edit = self.__find_phone(old_phone)
+
+        if phone_to_edit:
+            phone_to_edit.value = new_phone
+            return True
+        else:
+            return False
 
     # TODO: use __eq__ method in Phone class
     def remove_phone(self, phone_to_remove):
@@ -45,6 +42,10 @@ class Record:
         return self.birthday if self.birthday else "Birthday not set"
 
     def __str__(self):
-        # Use get_phones method to get phone numbers
-        phones_str = "; ".join(p.value for p in self.phones) if self.phones else "-"
-        return f"Contact >>> name: {self.name.value}, phones: {phones_str}, birthday: {self.birthday if self.birthday else '-'}"
+        return (f"Contact >>> name: {self.name.value}, "
+                f"phones: {"; ".join(p.value for p in self.phones) if self.phones else "-"}, "
+                f"birthday: {self.birthday if self.birthday else '-'}")
+
+    def __find_phone(self, phone_string):
+        found_phones = [phone for phone in self.phones if phone.value == phone_string]
+        return found_phones[0] if found_phones else None

@@ -6,7 +6,5 @@ def input_error(func):
             return e
         except ValueError as e:
             return e
-        except Exception as e:
-            return "An unexpected error occurred. Please try again."
 
     return inner

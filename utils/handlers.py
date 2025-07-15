@@ -1,5 +1,5 @@
+from models import Record
 from .decorators import input_error
-from models import AddressBook, Record
 
 
 @input_error

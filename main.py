@@ -1,3 +1,4 @@
+from models import AddressBook
 from utils import (
     add_contact,
     change_contact,
@@ -8,7 +9,6 @@ from utils import (
     birthdays,
     parse_input,
 )
-from models import AddressBook
 
 
 def run_bot():

@@ -22,3 +22,5 @@ Thumbs.db
 # Ignore VS Code or JetBrains settings
 .vscode/
 .idea/
+
+*.pkl

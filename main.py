@@ -7,13 +7,12 @@ from utils import (
     show_birthday,
     birthdays,
     parse_input,
-    load_data,
-    save_data,
 )
+from models import AddressBook
 
 
 def run_bot():
-    book = load_data()
+    book = AddressBook.load_or_create_book()
     print("Welcome to the assistant bot!")
     try:
         while True:
@@ -25,7 +24,7 @@ def run_bot():
             command, *args = parsed
 
             if command in ["close", "exit"]:
-                save_data(book)
+                book.save_to_file()
                 print("Good bye!")
                 break
             elif command == "hello":
@@ -47,7 +46,7 @@ def run_bot():
             else:
                 print("Invalid command.")
     except KeyboardInterrupt:
-        save_data(book)
+        book.save_to_file()
         print("\nGood bye!")
 
 

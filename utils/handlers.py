@@ -3,7 +3,7 @@ from models import AddressBook, Record
 
 
 @input_error
-def add_contact(args, book: AddressBook):
+def add_contact(args, book):
     check_args(args, "name", "phone")
 
     name, phone, *_ = args
@@ -26,14 +26,12 @@ def add_contact(args, book: AddressBook):
 
 
 @input_error
-def change_contact(args, book: AddressBook):
+def change_contact(args, book):
     check_args(args, "name", "old phone", "new phone")
 
     name, old_phone, new_phone, *_ = args
-    record = book.find(name)
 
-    if record is None:
-        return "No contact found!"
+    record = get_record(book, name)
 
     if record.edit_phone(old_phone, new_phone):
         return f"{name}'s phone has been successfully changed."
@@ -42,60 +40,50 @@ def change_contact(args, book: AddressBook):
 
 
 @input_error
-def phone_contact(args, book: AddressBook):
+def phone_contact(args, book):
     check_args(args, "name")
 
     name, *_ = args
-    record = book.find(name)
 
-    if record is None:
-        return "No contact found!"
+    record = get_record(book, name)
 
     phones = record.get_phone()
     return f"{name}'s phone numbers: {phones}"
 
 
 @input_error
-def all_contacts(args, book: AddressBook):
+def all_contacts(args, book):
     if not book:
         return "No contacts found."
     return "\n".join(str(record) for record in book.values())
 
 
 @input_error
-def add_birthday(args, book: AddressBook):
+def add_birthday(args, book):
     check_args(args, "name", "birthday")
 
     name, birthday_date, *_ = args
 
-    record = book.find(name)
+    record = get_record(book, name)
 
-    if record is None:
-        message = "No contact found!"
-    else:
-        record.add_birthday(birthday_date)
-        message = f"{name}'s birthday date has been successfully added."
-
-    return message
+    record.add_birthday(birthday_date)
+    return f"{name}'s birthday date has been successfully added."
 
 
 @input_error
-def show_birthday(args, book: AddressBook):
+def show_birthday(args, book):
     check_args(args, "name")
 
     name, *_ = args
 
-    record = book.find(name)
-
-    if record is None:
-        return "No contact found!"
+    record = get_record(book, name)
 
     birthday = record.show_birthday()
     return f"{name}'s birthday date: {birthday}"
 
 
 @input_error
-def birthdays(book: AddressBook):
+def birthdays(book):
     if not book:
         return "No contacts found."
 
@@ -110,6 +98,16 @@ def birthdays(book: AddressBook):
 
     return "\n".join(messages)
 
+
 def check_args(args, *fields):
     if len(args) < len(fields):
         raise ValueError(f"Please provide: {", ".join(fields)}.")
+
+
+def get_record(book, name):
+    record = book.find(name)
+
+    if not record:
+        raise KeyError(f"No contact found for name: {name}.")
+
+    return record

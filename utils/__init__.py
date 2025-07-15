@@ -8,4 +8,4 @@ from .handlers import (
     birthdays,
 )
 from .parser import parse_input
-
+from .get_birthdays import upcoming_birthdays

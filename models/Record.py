@@ -27,14 +27,6 @@ class Record:
         else:
             return False
 
-    # TODO: use __eq__ method in Phone class
-    def remove_phone(self, phone_to_remove):
-        for phone in self.phones:
-            if phone.value == phone_to_remove:
-                self.phones.remove(phone)
-                return True
-        return False
-
     def add_birthday(self, new_date):
         self.birthday = Birthday(new_date)
 

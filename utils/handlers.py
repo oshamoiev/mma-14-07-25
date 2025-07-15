@@ -4,8 +4,11 @@ from models import AddressBook, Record
 
 @input_error
 def add_contact(args, book: AddressBook):
+    check_args(args, "name", "phone")
+
     name, phone, *_ = args
     record = book.find(name)
+
     message = "The address book has been updated."
 
     if record is None:
@@ -24,6 +27,8 @@ def add_contact(args, book: AddressBook):
 
 @input_error
 def change_contact(args, book: AddressBook):
+    check_args(args, "name", "old phone", "new phone")
+
     name, old_phone, new_phone, *_ = args
     record = book.find(name)
 
@@ -38,6 +43,8 @@ def change_contact(args, book: AddressBook):
 
 @input_error
 def phone_contact(args, book: AddressBook):
+    check_args(args, "name")
+
     name, *_ = args
     record = book.find(name)
 
@@ -57,9 +64,11 @@ def all_contacts(args, book: AddressBook):
 
 @input_error
 def add_birthday(args, book: AddressBook):
+    check_args(args, "name", "birthday")
+
     name, birthday_date, *_ = args
+
     record = book.find(name)
-    message = "The address book has been updated."
 
     if record is None:
         message = "No contact found!"
@@ -72,7 +81,10 @@ def add_birthday(args, book: AddressBook):
 
 @input_error
 def show_birthday(args, book: AddressBook):
+    check_args(args, "name")
+
     name, *_ = args
+
     record = book.find(name)
 
     if record is None:
@@ -83,7 +95,7 @@ def show_birthday(args, book: AddressBook):
 
 
 @input_error
-def birthdays(args, book: AddressBook):
+def birthdays(book: AddressBook):
     if not book:
         return "No contacts found."
 
@@ -97,3 +109,7 @@ def birthdays(args, book: AddressBook):
     ]
 
     return "\n".join(messages)
+
+def check_args(args, *fields):
+    if len(args) < len(fields):
+        raise ValueError(f"Please provide: {", ".join(fields)}.")

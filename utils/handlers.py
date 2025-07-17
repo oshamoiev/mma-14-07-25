@@ -1,4 +1,5 @@
-from models import Record
+from models.Record import Record
+from utils.table_provider import get_note_table
 from .decorators import input_error
 
 
@@ -97,6 +98,72 @@ def birthdays(book):
     ]
 
     return "\n".join(messages)
+
+
+@input_error
+def add_note(args, book):
+    check_args(args, "Key", "Content")
+
+    key, *content_words = args
+
+    content = " ".join(content_words)
+    book.add_note(key, content)
+
+    return f"Note with Key = '{key}' has been added."
+
+
+@input_error
+def delete_note(args, book):
+    check_args(args, "Key")
+
+    key, *_ = args
+    book.delete_note(key)
+
+    return f"Note with Key = '{key}' has been deleted."
+
+
+@input_error
+def change_note(args, book):
+    check_args(args, "Key", "New Content")
+
+    key, *new_content_words = args
+
+    new_content = " ".join(new_content_words)
+    book.change_note(key, new_content)
+
+    return f"Note with Key = '{key}' has been changed."
+
+
+@input_error
+def find_notes(args, book):
+    check_args(args, "search content")
+
+    found_notes = book.find_notes(args)
+
+    if not found_notes:
+        return "No notes found with the given content."
+
+    return get_note_table(found_notes)
+
+
+@input_error
+def get_note(args, book):
+    check_args(args, "Key")
+
+    key, *_ = args
+
+    note = book.get_note(key)
+
+    return get_note_table([note])
+
+
+def get_all_notes(book):
+    notes = book.get_all_notes()
+
+    if not notes:
+        return "No Notes in the book."
+
+    return get_note_table(notes)
 
 
 def check_args(args, *fields):

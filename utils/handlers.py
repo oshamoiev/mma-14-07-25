@@ -6,23 +6,25 @@ from .decorators import input_error
 def add_contact(args, book):
     check_args(args, "name", "phone")
 
-    name, phone, *_ = args
+    name, phone = args[0], args[1]
+    email = args[2] if len(args) > 2 else None
+    birthday = args[3] if len(args) > 3 else None
+
     record = book.find(name)
+    is_new = record is None
 
-    message = "The address book has been updated."
-
-    if record is None:
+    if is_new:
         record = Record(name)
         book.add_record(record)
-        message = "New contact has been added."
 
     if phone:
-        if record.add_phone(phone):
-            message = f"Phone {phone} added to contact {name}."
-        else:
-            message = f"Phone {phone} already exists for contact {name}."
+        record.add_phone(phone)
+    if email and hasattr(record, 'add_email'):
+        record.add_email(email)
+    if birthday and hasattr(record, 'add_birthday'):
+        record.add_birthday(birthday)
 
-    return message
+    return f"{'New contact' if is_new else 'Contact'} {name} has been {'added' if is_new else 'updated'}."
 
 
 @input_error

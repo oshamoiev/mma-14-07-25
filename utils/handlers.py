@@ -27,16 +27,24 @@ def add_contact(args, book):
 
 @input_error
 def change_contact(args, book):
-    check_args(args, "name", "old phone", "new phone")
+    check_args(args, "name")
 
-    name, old_phone, new_phone, *_ = args
-
+    name, *fields = args
     record = get_record(book, name)
 
-    if record.edit_phone(old_phone, new_phone):
-        return f"{name}'s phone has been successfully changed."
-    else:
-        return f"Phone number {old_phone} not found for contact {name}."
+    phones, email, birthday = parse_contact_fields(fields)
+
+    for phone in phones:
+        record.add_phone(phone)
+
+    if email and hasattr(record, 'add_email'):
+        record.add_email(email)
+
+    if birthday and hasattr(record, 'add_birthday'):
+        record.add_birthday(birthday)
+
+    return f"Contact {name} has been updated."
+
 
 
 @input_error

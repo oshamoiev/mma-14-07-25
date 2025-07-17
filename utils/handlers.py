@@ -44,12 +44,10 @@ def remove_contact(args, book):
     check_args(args, "name")
     name = args[0]
 
-    record = book.find(name)
-    if record is None:
-        return f"Contact {name} not found."
-
-    book.delete(name)
-    return f"Contact {name} has been removed."
+    record = get_record(book, name)
+    if record:
+        book.delete(name)
+        return f"Contact {name} has been removed."
 
 
 @input_error

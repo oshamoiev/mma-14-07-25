@@ -11,7 +11,10 @@ def add_contact(args, book):
     record = book.find(name)
     is_new = record is None
 
-    phones, email, birthday = parse_contact_fields(fields)
+    phones, email, birthday, warnings = parse_contact_fields(fields)
+
+    if not phones:
+        raise ValueError("At least one phone number is required to add a contact.")
 
     if is_new:
         record = Record(name)
@@ -27,7 +30,13 @@ def add_contact(args, book):
         record.add_birthday(birthday)
 
     status = "added" if is_new else "updated"
-    return f"{'New contact' if is_new else 'Contact'} {name} has been {status}."
+    message = f"{'New contact' if is_new else 'Contact'} {name} has been {status}."
+
+    if warnings:
+        message += "\n" + "\n".join(warnings)
+
+    return message
+
 
 
 @input_error

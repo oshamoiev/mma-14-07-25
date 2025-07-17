@@ -1,30 +1,33 @@
 from models import Record
 from .decorators import input_error
+from .parser import parse_contact_fields
 
 
 @input_error
 def add_contact(args, book):
-    check_args(args, "name", "phone")
+    check_args(args, "name")
 
-    name, phone = args[0], args[1]
-    email = args[2] if len(args) > 2 else None
-    birthday = args[3] if len(args) > 3 else None
-
+    name, *fields = args
     record = book.find(name)
     is_new = record is None
+
+    phones, email, birthday = parse_contact_fields(fields)
 
     if is_new:
         record = Record(name)
         book.add_record(record)
 
-    if phone:
+    for phone in phones:
         record.add_phone(phone)
+
     if email and hasattr(record, 'add_email'):
         record.add_email(email)
+
     if birthday and hasattr(record, 'add_birthday'):
         record.add_birthday(birthday)
 
-    return f"{'New contact' if is_new else 'Contact'} {name} has been {'added' if is_new else 'updated'}."
+    status = "added" if is_new else "updated"
+    return f"{'New contact' if is_new else 'Contact'} {name} has been {status}."
 
 
 @input_error

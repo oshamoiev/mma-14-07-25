@@ -1,4 +1,4 @@
-from models import Record
+from models import Record, AddressBook
 from .decorators import input_error
 
 
@@ -98,10 +98,37 @@ def birthdays(book):
 
     return "\n".join(messages)
 
+@input_error
+def add_email(args, book: AddressBook):
+    if len(args) < 2:
+        return "You must provide both a name and an email."
+    name, email, *_ = args
+    record = book.find(name)
+    message = "The address book has been updated."
+
+    if record is None:
+        message = "No contact found"
+    else:
+        record.add_email(email)
+        message = f"{name}'s email has been successfully added."
+
+    return message
+
+@input_error
+def show_email(args, book: AddressBook):
+    name, *_ = args
+    record = book.find(name)
+
+    if record is None:
+        return "No contact found!"
+
+    email = record.show_email()
+    return f"{name}'s email: {email}"
+
 
 def check_args(args, *fields):
     if len(args) < len(fields):
-        raise ValueError(f"Please provide: {", ".join(fields)}.")
+        raise ValueError(f'Please provide: {", ".join(fields)}.')
 
 
 def get_record(book, name):

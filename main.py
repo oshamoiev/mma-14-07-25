@@ -8,6 +8,8 @@ from utils import (
     show_birthday,
     birthdays,
     parse_input,
+    add_email,
+    show_email,
 )
 
 
@@ -43,6 +45,10 @@ def run_bot():
                 print(show_birthday(args, book))
             elif command == "birthdays":
                 print(birthdays(book))
+            elif command == "add-email":
+                print(add_email(args, book))
+            elif command == "show-email":
+                print(show_email(args, book))
             else:
                 print("Invalid command.")
     except KeyboardInterrupt:

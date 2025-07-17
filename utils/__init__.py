@@ -6,6 +6,8 @@ from .handlers import (
     add_birthday,
     show_birthday,
     birthdays,
+    add_email,
+    show_email,
 )
 from .parser import parse_input
 from .get_birthdays import upcoming_birthdays

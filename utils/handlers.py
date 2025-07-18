@@ -100,35 +100,26 @@ def birthdays(book):
 
 @input_error
 def add_email(args, book: AddressBook):
-    if len(args) < 2:
-        return "You must provide both a name and an email."
+    check_args(args, "name", "email")
+
     name, email, *_ = args
-    record = book.find(name)
-    message = "The address book has been updated."
-
-    if record is None:
-        message = "No contact found"
-    else:
-        record.add_email(email)
-        message = f"{name}'s email has been successfully added."
-
-    return message
+    record = get_record(book, name)
+    record.add_email(email)
+    return f"{name}'s email has been successfully added."
 
 @input_error
 def show_email(args, book: AddressBook):
+    check_args(args, "name")
+
     name, *_ = args
-    record = book.find(name)
-
-    if record is None:
-        return "No contact found!"
-
+    record = get_record(book, name)
     email = record.show_email()
     return f"{name}'s email: {email}"
 
 
 def check_args(args, *fields):
     if len(args) < len(fields):
-        raise ValueError(f'Please provide: {", ".join(fields)}.')
+        raise ValueError(f"Please provide: {', '.join(fields)}.")
 
 
 def get_record(book, name):

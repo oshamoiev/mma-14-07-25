@@ -1,7 +1,7 @@
 from .Birthday import Birthday
 from .Name import Name
 from .Phone import Phone
-from .email_validator import Email
+from .email import Email
 
 
 class Record:

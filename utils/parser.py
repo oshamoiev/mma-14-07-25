@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from models import Phone, Email, Birthday
 
 
 def parse_input(user_input):
@@ -17,20 +18,30 @@ def parse_contact_fields(fields):
     warnings = []
 
     for field in fields:
-        if field.isdigit() and len(field) == 10:
-            phones.append(field)
-        elif re.fullmatch(r"[^@]+@[^@]+\.[^@]+", field):
-            email = field
-        elif re.fullmatch(r"\d{2}\.\d{2}\.\d{4}", field):
-            try:
-                datetime.strptime(field, "%d.%m.%Y")
-                birthday = field
-            except ValueError:
-                warnings.append(f"Ignored invalid birthday date: {field}")
-        else:
-            if re.match(r"\d{1,2}\.\d{1,2}\.\d{2,4}", field):
-                warnings.append(f"Ignored invalid birthday format: {field}")
-            else:
-                warnings.append(f"Ignored unrecognized field: {field}")
+        try:
+            phone = Phone(field)
+            phones.append(phone)
+            continue
+        except ValueError:
+            pass
+
+        try:
+            if email is None:  # Only one email allowed
+                email_obj = Email(field)
+                email = email_obj
+                continue
+        except ValueError:
+            pass
+
+        try:
+            if birthday is None:
+                birthday_obj = Birthday(field)
+                birthday = birthday_obj
+                continue
+        except ValueError:
+            pass
+
+        warnings.append(f"Ignored unrecognized or invalid field: {field}")
 
     return phones, email, birthday, warnings
+

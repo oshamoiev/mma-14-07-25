@@ -8,7 +8,7 @@ def add_contact(args, book):
     check_args(args, "name")
 
     name, *fields = args
-    record = book.find(name)
+    record = get_record(book, name)
     is_new = record is None
 
     phones, email, birthday, warnings = parse_contact_fields(fields)

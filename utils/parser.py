@@ -1,6 +1,9 @@
 import re
 from datetime import datetime
-from models import Phone, Email, Birthday
+# from models import Phone, Email, Birthday
+from models.Email import Email
+from models.Phone import Phone
+from models.Birthday import Birthday
 
 
 def parse_input(user_input):
@@ -15,33 +18,25 @@ def parse_contact_fields(fields):
     phones = []
     email = None
     birthday = None
-    warnings = []
 
     for field in fields:
         try:
-            phone = Phone(field)
-            phones.append(phone)
-            continue
+            phones.append(Phone(field))
         except ValueError:
-            pass
-
-        try:
-            if email is None:  # Only one email allowed
-                email_obj = Email(field)
-                email = email_obj
-                continue
-        except ValueError:
-            pass
-
-        try:
+            if email is None:
+                try:
+                    email = Email(field)
+                    continue
+                except ValueError:
+                    pass
             if birthday is None:
-                birthday_obj = Birthday(field)
-                birthday = birthday_obj
-                continue
-        except ValueError:
-            pass
+                try:
+                    birthday = Birthday(field)
+                    continue
+                except ValueError:
+                    pass
+            raise ValueError(f"Unrecognized field format: {field}")
 
-        warnings.append(f"Ignored unrecognized or invalid field: {field}")
+    return phones, email, birthday
 
-    return phones, email, birthday, warnings
 

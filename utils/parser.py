@@ -1,9 +1,4 @@
-import re
-from datetime import datetime
-# from models import Phone, Email, Birthday
-from models.Email import Email
-from models.Phone import Phone
-from models.Birthday import Birthday
+from models import Phone, Email, Birthday
 
 
 def parse_input(user_input):
@@ -38,5 +33,3 @@ def parse_contact_fields(fields):
             raise ValueError(f"Unrecognized field format: {field}")
 
     return phones, email, birthday
-
-

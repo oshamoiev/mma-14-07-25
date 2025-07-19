@@ -1,11 +1,16 @@
 import pickle
 from collections import UserDict
 
+from models.NoteBook import NoteBook
 from utils import upcoming_birthdays
 
 
 class AddressBook(UserDict):
     FILENAME = "addressbook.pkl"
+
+    def __init__(self):
+        super().__init__()
+        self.note_book = NoteBook()
 
     @classmethod
     def load_or_create_book(cls):
@@ -30,3 +35,21 @@ class AddressBook(UserDict):
 
     def get_upcoming_birthdays(self):
         return upcoming_birthdays(self)
+
+    def add_note(self, key, content):
+        self.note_book.add_note(key, content)
+
+    def delete_note(self, key):
+        self.note_book.delete_note(key)
+
+    def change_note(self, key, new_content):
+        self.note_book.change_note(key, new_content)
+
+    def find_notes(self, search_content):
+        return self.note_book.find_notes(search_content)
+
+    def get_note(self, note_id):
+        return self.note_book.get_note(note_id)
+
+    def get_all_notes(self):
+        return self.note_book.get_all_notes()

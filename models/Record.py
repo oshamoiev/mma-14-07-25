@@ -1,7 +1,7 @@
 from .Birthday import Birthday
 from .Name import Name
 from .Phone import Phone
-from .email import Email
+from .Email import Email
 
 
 class Record:
@@ -40,10 +40,10 @@ class Record:
 
     def show_birthday(self):
         return self.birthday if self.birthday else "Birthday not set"
-    
+
     def add_email(self, email):
         self.email = Email(email)
-    
+
     def show_email(self):
         return self.email.value if self.email else "-"
 
@@ -53,8 +53,7 @@ class Record:
             f"phones: {'; '.join(p.value for p in self.phones) if self.phones else '-'}, "
             f"birthday: {self.birthday if self.birthday else '-'}"
             f"email: {self.email.value if self.email else '-'}"
-            )
-                
+        )
 
     def __find_phone(self, phone_string):
         found_phones = [phone for phone in self.phones if phone.value == phone_string]

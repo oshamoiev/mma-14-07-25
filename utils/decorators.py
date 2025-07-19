@@ -6,5 +6,7 @@ def input_error(func):
             return e
         except ValueError as e:
             return e
+        except IndexError as e:
+            return e
 
     return inner

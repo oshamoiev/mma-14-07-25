@@ -27,7 +27,6 @@ class AddressBook(UserDict):
         return self.data.get(contact_name)
 
     def delete(self, contact_name):
-        print(f"{contact_name} was successfully removed!")
         return self.data.pop(contact_name, None)
 
     def save_to_file(self):

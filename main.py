@@ -6,8 +6,8 @@ from utils import (
     add_contact,
     change_contact,
     remove_contact,
-    phone_contact,
-    all_contacts,
+    get_contact,
+    get_contacts,
     add_birthday,
     show_birthday,
     birthdays,
@@ -50,9 +50,9 @@ def run_bot():
             elif command == "remove-contact":
                 print(remove_contact(args, book))
             elif command == "contact":
-                print(phone_contact(args, book))
+                console.print(get_contact(args, book))
             elif command == "contacts":
-                print(all_contacts(args, book))
+                console.print(get_contacts(args, book))
             elif command == "add-birthday":
                 print(add_birthday(args, book))
             elif command == "show-birthday":

@@ -11,7 +11,8 @@ from .handlers import (
     get_note,
     get_all_notes,
     find_notes,
-    change_note
+    change_note,
+    tag_note
 )
 from .parser import parse_input
 from .get_birthdays import upcoming_birthdays

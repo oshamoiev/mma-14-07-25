@@ -1,26 +1,36 @@
 from models import Record, AddressBook
 from .decorators import input_error
+from .parser import parse_contact_fields
 
 
 @input_error
 def add_contact(args, book):
-    check_args(args, "name", "phone")
+    check_args(args, "name")
 
-    name, phone, *_ = args
+    name, *fields = args
     record = book.find(name)
+    is_new = record is None
 
-    message = "The address book has been updated."
+    phones, email, birthday = parse_contact_fields(fields)
 
-    if record is None:
+    if not phones:
+        raise ValueError("At least one phone number is required to add a contact.")
+
+    if is_new:
         record = Record(name)
         book.add_record(record)
-        message = "New contact has been added."
 
-    if phone:
-        if record.add_phone(phone):
-            message = f"Phone {phone} added to contact {name}."
-        else:
-            message = f"Phone {phone} already exists for contact {name}."
+    for phone in phones:
+        record.add_phone(phone)
+
+    if email and hasattr(record, 'add_email'):
+        record.add_email(email)
+
+    if birthday and hasattr(record, 'add_birthday'):
+        record.add_birthday(birthday)
+
+    status = "added" if is_new else "updated"
+    message = f"{'New contact' if is_new else 'Contact'} {name} has been {status}."
 
     return message
 

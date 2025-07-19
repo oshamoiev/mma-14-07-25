@@ -15,9 +15,15 @@ class Record:
         return "; ".join(phone.value for phone in self.phones) if self.phones else "-"
 
     def add_phone(self, new_phone):
-        if any(phone.value == new_phone for phone in self.phones):
+        if isinstance(new_phone, Phone):
+            phone_obj = new_phone
+        else:
+            phone_obj = Phone(new_phone)
+
+        if any(phone.value == phone_obj.value for phone in self.phones):
             return False
-        self.phones.append(Phone(new_phone))
+
+        self.phones.append(phone_obj)
         return True
 
     def edit_phone(self, old_phone, new_phone):

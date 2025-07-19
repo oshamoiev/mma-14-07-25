@@ -1,4 +1,6 @@
-from models import Phone, Email, Birthday
+from models.Phone import Phone
+from models.Email import Email
+from models.Birthday import Birthday
 
 
 def parse_input(user_input):

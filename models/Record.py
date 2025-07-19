@@ -38,11 +38,17 @@ class Record:
     def add_birthday(self, new_date):
         self.birthday = Birthday(new_date)
 
-    def show_birthday(self):
-        return self.birthday if self.birthday else "Birthday not set"
+    def add_birthday(self, new_date):
+        if isinstance(new_date, Birthday):
+            self.birthday = new_date
+        else:
+            self.birthday = Birthday(new_date)
 
     def add_email(self, email):
-        self.email = Email(email)
+        if isinstance(email, Email):
+            self.email = email
+        else:
+            self.email = Email(email)
 
     def show_email(self):
         return self.email.value if self.email else "-"

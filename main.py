@@ -20,6 +20,7 @@ from utils import (
     find_notes,
     change_note,
     tag_note,
+    help_command,
 )
 
 
@@ -27,7 +28,8 @@ def run_bot():
     console = Console()
     book = AddressBook.load_or_create_book()
     print("Welcome to the assistant bot!")
-
+    print(help_command())
+    
     try:
         while True:
             user_input = input("Enter a command: ")
@@ -77,6 +79,8 @@ def run_bot():
                 console.print(get_all_notes(book))
             elif command == "tag-note":
                 console.print(tag_note(args, book))
+            elif command == "help":
+                print(help_command())
             else:
                 print("Invalid command.")
     except KeyboardInterrupt:

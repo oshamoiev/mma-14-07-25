@@ -113,13 +113,17 @@ def show_birthday(args, book):
 
 
 @input_error
-def birthdays(book):
+def birthdays(args, book):
+    days = 7  
+    if args and args[0].isdigit():
+        days = int(args[0])
+    
     if not book:
         return "No contacts found."
 
-    upcoming_birthdays = book.get_upcoming_birthdays()
+    upcoming_birthdays = book.get_upcoming_birthdays(days)
     if not upcoming_birthdays:
-        return "No upcoming birthdays found."
+        return f"No upcoming birthdays found in the next {days} days."
 
     messages = [
         f"{birthday['name']}'s upcoming birthday will be on {birthday['congratulation_date']}"

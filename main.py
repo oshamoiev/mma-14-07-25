@@ -60,7 +60,7 @@ def run_bot():
             elif command == "show-birthday":
                 print(show_birthday(args, book))
             elif command == "birthdays":
-                print(birthdays(book))
+                print(birthdays(args, book))
             elif command == "add-email":
                 print(add_email(args, book))
             elif command == "show-email":

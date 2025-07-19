@@ -2,6 +2,7 @@ from rich.console import Console
 
 from models import AddressBook
 from utils import (
+    parse_input,
     add_contact,
     change_contact,
     remove_contact,
@@ -18,7 +19,7 @@ from utils import (
     get_all_notes,
     find_notes,
     change_note,
-    parse_input,
+    tag_note,
 )
 
 
@@ -74,6 +75,8 @@ def run_bot():
                 console.print(get_note(args, book))
             elif command == "notes":
                 console.print(get_all_notes(book))
+            elif command == "tag-note":
+                console.print(tag_note(args, book))
             else:
                 print("Invalid command.")
     except KeyboardInterrupt:

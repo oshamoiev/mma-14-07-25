@@ -48,8 +48,11 @@ class AddressBook(UserDict):
     def find_notes(self, search_content):
         return self.note_book.find_notes(search_content)
 
-    def get_note(self, note_id):
-        return self.note_book.get_note(note_id)
+    def get_note(self, key):
+        return self.note_book.get_note(key)
 
     def get_all_notes(self):
         return self.note_book.get_all_notes()
+
+    def tag_note(self, key, tag):
+        self.note_book.add_tag(key, tag)

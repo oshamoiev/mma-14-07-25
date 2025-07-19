@@ -37,3 +37,7 @@ class NoteBook(UserDict):
 
     def get_all_notes(self):
         return self.data.values()
+
+    def add_tag(self, key, tag):
+        note = self.get_note(key)
+        note.add_tag(tag)

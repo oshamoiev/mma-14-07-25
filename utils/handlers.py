@@ -214,6 +214,18 @@ def get_all_notes(book):
     return get_note_table(notes)
 
 
+@input_error
+def tag_note(args, book):
+    check_args(args, "Key", "Tag")
+
+    key, *tag_strings = args
+
+    tag = " ".join(tag_strings)
+    book.tag_note(key, tag)
+
+    return f"Tag '{tag}' has been added to note with Key = '{key}'."
+
+
 def check_args(args, *fields):
     if len(args) < len(fields):
         raise ValueError(f"Please provide: {", ".join(fields)}.")

@@ -57,7 +57,6 @@ def change_contact(args, book):
     return f"Contact {name} has been updated."
 
 
-
 @input_error
 def remove_contact(args, book):
     check_args(args, "name")
@@ -128,6 +127,7 @@ def birthdays(book):
 
     return "\n".join(messages)
 
+
 @input_error
 def add_email(args, book):
     check_args(args, "name", "email")
@@ -136,6 +136,7 @@ def add_email(args, book):
     record = get_record(book, name)
     record.add_email(email)
     return f"{name}'s email has been successfully added."
+
 
 @input_error
 def show_email(args, book):

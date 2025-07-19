@@ -1,7 +1,8 @@
 from models import Record
-from utils.table_provider import get_note_table, get_record_table
+from utils.table_provider import get_note_table, get_record_table, get_help_table
 from .decorators import input_error
 from .parser import parse_contact_fields
+from rich.console import Console
 
 
 @input_error
@@ -241,33 +242,6 @@ def get_record(book, name):
 
 
 def help_command(*args):
-    help_message = """
-Available commands:
-
-General:
-  hello                - Greet the bot
-  help                 - Show this help
-  exit / close         - Exit and save
-
-Contacts:
-  add-contact          - Add contact <name> <phone> [birthday] [email]; [] - are optional 
-  change-contact       - Change phone <name> <old_phone> <new_phone>
-  remove-contact       - Remove contact <name>
-  contact              - Show contact <name>
-  contacts [page]      - Show all contacts
-  add-birthday         - Add birthday <name> <DD.MM.YYYY>
-  show-birthday        - Show birthday <name>
-  birthdays            - Upcoming birthdays
-  add-email            - Add email <name> <email>
-  show-email           - Show email <name>
-
-Notes:
-  add-note             - Add a new note
-  delete-note          - Delete note <note_id>
-  change-note          - Edit note <note_id> <new_text>
-  note                 - Show note <note_id>
-  notes                - Show all notes
-  tag-note             - Tag note <note_id> <tag>
-  find-notes           - Find notes <keyword or tag>
-"""
-    return help_message
+    console = Console()
+    console.print(get_help_table())
+    return ""

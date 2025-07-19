@@ -2,6 +2,7 @@ from models import AddressBook
 from utils import (
     add_contact,
     change_contact,
+    remove_contact,
     phone_contact,
     all_contacts,
     add_birthday,
@@ -35,6 +36,8 @@ def run_bot():
                 print(add_contact(args, book))
             elif command == "change":
                 print(change_contact(args, book))
+            elif command == "remove":
+                print(remove_contact(args, book))
             elif command == "phone":
                 print(phone_contact(args, book))
             elif command == "all":

@@ -1,6 +1,7 @@
 from .handlers import (
     add_contact,
     change_contact,
+    remove_contact,
     phone_contact,
     all_contacts,
     add_birthday,

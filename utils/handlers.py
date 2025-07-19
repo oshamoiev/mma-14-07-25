@@ -58,6 +58,17 @@ def change_contact(args, book):
 
 
 @input_error
+def remove_contact(args, book):
+    check_args(args, "name")
+    name = args[0]
+
+    get_record(book, name)
+    
+    book.delete(name)
+    return f"Contact {name} has been removed."
+
+
+@input_error
 def phone_contact(args, book):
     check_args(args, "name")
 

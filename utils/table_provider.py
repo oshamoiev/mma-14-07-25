@@ -49,7 +49,7 @@ def get_help_table():
     table.add_row("Contacts", "contacts [page]", "Show all contacts")
     table.add_row("Contacts", "add-birthday", "Add birthday <name> <DD.MM.YYYY>")
     table.add_row("Contacts", "show-birthday", "Show birthday <name>")
-    table.add_row("Contacts", "birthdays", "Upcoming birthdays")
+    table.add_row("Contacts", "birthdays [days]", "Show birthdays in next N days")
     table.add_row("Contacts", "add-email", "Add email <name> <email>")
     table.add_row("Contacts", "show-email", "Show email <name>")
 

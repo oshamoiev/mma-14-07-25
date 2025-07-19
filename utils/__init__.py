@@ -2,8 +2,8 @@ from .handlers import (
     add_contact,
     change_contact,
     remove_contact,
-    phone_contact,
-    all_contacts,
+    get_contact,
+    get_contacts,
     add_birthday,
     show_birthday,
     birthdays,
@@ -19,4 +19,7 @@ from .handlers import (
 )
 from .parser import parse_input
 from .get_birthdays import upcoming_birthdays
-from .table_provider import get_note_table
+from .table_provider import (
+    get_note_table,
+    get_record_table
+)

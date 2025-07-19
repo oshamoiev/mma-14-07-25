@@ -8,8 +8,8 @@ class Record:
     def __init__(self, name):
         self.name = Name(name)
         self.phones = []
-        self.birthday = None
         self.email = None
+        self.birthday = None
 
     def get_phone(self):
         return "; ".join(phone.value for phone in self.phones) if self.phones else "-"
@@ -46,14 +46,6 @@ class Record:
 
     def show_email(self):
         return self.email.value if self.email else "-"
-
-    def __str__(self):
-        return (
-            f"Contact >>> name: {self.name.value}, "
-            f"phones: {'; '.join(p.value for p in self.phones) if self.phones else '-'}, "
-            f"birthday: {self.birthday if self.birthday else '-'}"
-            f"email: {self.email.value if self.email else '-'}"
-        )
 
     def __find_phone(self, phone_string):
         found_phones = [phone for phone in self.phones if phone.value == phone_string]

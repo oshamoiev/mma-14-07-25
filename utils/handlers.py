@@ -1,5 +1,5 @@
 from models import Record
-from utils.table_provider import get_note_table
+from utils.table_provider import get_note_table, get_record_table
 from .decorators import input_error
 from .parser import parse_contact_fields
 
@@ -69,22 +69,22 @@ def remove_contact(args, book):
 
 
 @input_error
-def phone_contact(args, book):
+def get_contact(args, book):
     check_args(args, "name")
 
     name, *_ = args
 
     record = get_record(book, name)
 
-    phones = record.get_phone()
-    return f"{name}'s phone numbers: {phones}"
+    return get_record_table([record])
 
 
 @input_error
-def all_contacts(args, book):
+def get_contacts(args, book):
     if not book:
         return "No contacts found."
-    return "\n".join(str(record) for record in book.values())
+
+    return get_record_table(book.values())
 
 
 @input_error

@@ -13,3 +13,21 @@ def get_note_table(notes):
         table.add_section()
 
     return table
+
+
+def get_record_table(records):
+    table = Table(title="Contacts")
+
+    table.add_column("Name", justify="center", style="cyan", no_wrap=True)
+    table.add_column("Phones", justify="left", style="magenta", max_width=50)
+    table.add_column("Email", justify="left", style="green", max_width=25)
+    table.add_column("Birthday", justify="left", style="blue", max_width=25)
+
+    for record in records:
+        table.add_row(str(record.name),
+                          ", ".join([str(phone) for phone in record.phones]),
+                          str(record.email) if record.email else "",
+                          str(record.birthday) if record.birthday else "")
+        table.add_section()
+
+    return table

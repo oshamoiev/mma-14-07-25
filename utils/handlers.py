@@ -1,43 +1,71 @@
-from models.Record import Record
+from models import Record
 from utils.table_provider import get_note_table
 from .decorators import input_error
+from .parser import parse_contact_fields
 
 
 @input_error
 def add_contact(args, book):
-    check_args(args, "name", "phone")
+    check_args(args, "name")
 
-    name, phone, *_ = args
+    name, *fields = args
     record = book.find(name)
+    is_new = record is None
 
-    message = "The address book has been updated."
+    phones, email, birthday = parse_contact_fields(fields)
 
-    if record is None:
+    if not phones:
+        raise ValueError("At least one phone number is required to add a contact.")
+
+    if is_new:
         record = Record(name)
         book.add_record(record)
-        message = "New contact has been added."
 
-    if phone:
-        if record.add_phone(phone):
-            message = f"Phone {phone} added to contact {name}."
-        else:
-            message = f"Phone {phone} already exists for contact {name}."
+    for phone in phones:
+        record.add_phone(phone)
+
+    if email and hasattr(record, 'add_email'):
+        record.add_email(email)
+
+    if birthday and hasattr(record, 'add_birthday'):
+        record.add_birthday(birthday)
+
+    status = "added" if is_new else "updated"
+    message = f"{'New contact' if is_new else 'Contact'} {name} has been {status}."
 
     return message
 
 
 @input_error
 def change_contact(args, book):
-    check_args(args, "name", "old phone", "new phone")
+    check_args(args, "name")
 
-    name, old_phone, new_phone, *_ = args
-
+    name, *fields = args
     record = get_record(book, name)
 
-    if record.edit_phone(old_phone, new_phone):
-        return f"{name}'s phone has been successfully changed."
-    else:
-        return f"Phone number {old_phone} not found for contact {name}."
+    phones, email, birthday = parse_contact_fields(fields)
+
+    for phone in phones:
+        record.add_phone(phone)
+
+    if email and hasattr(record, 'add_email'):
+        record.add_email(email)
+
+    if birthday and hasattr(record, 'add_birthday'):
+        record.add_birthday(birthday)
+
+    return f"Contact {name} has been updated."
+
+
+@input_error
+def remove_contact(args, book):
+    check_args(args, "name")
+    name = args[0]
+
+    get_record(book, name)
+
+    book.delete(name)
+    return f"Contact {name} has been removed."
 
 
 @input_error
@@ -98,6 +126,26 @@ def birthdays(book):
     ]
 
     return "\n".join(messages)
+
+
+@input_error
+def add_email(args, book):
+    check_args(args, "name", "email")
+
+    name, email, *_ = args
+    record = get_record(book, name)
+    record.add_email(email)
+    return f"{name}'s email has been successfully added."
+
+
+@input_error
+def show_email(args, book):
+    check_args(args, "name")
+
+    name, *_ = args
+    record = get_record(book, name)
+    email = record.show_email()
+    return f"{name}'s email: {email}"
 
 
 @input_error

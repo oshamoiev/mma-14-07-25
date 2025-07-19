@@ -2,21 +2,24 @@ from rich.console import Console
 
 from models import AddressBook
 from utils import (
+    parse_input,
     add_contact,
     change_contact,
+    remove_contact,
     phone_contact,
     all_contacts,
     add_birthday,
     show_birthday,
     birthdays,
+    add_email,
+    show_email,
     add_note,
     delete_note,
     get_note,
     get_all_notes,
-    parse_input,
     find_notes,
     change_note,
-    tag_note
+    tag_note,
 )
 
 
@@ -44,9 +47,11 @@ def run_bot():
                 print(add_contact(args, book))
             elif command == "change-contact":
                 print(change_contact(args, book))
-            elif command == "phone":
+            elif command == "remove-contact":
+                print(remove_contact(args, book))
+            elif command == "contact":
                 print(phone_contact(args, book))
-            elif command == "show-contacts":
+            elif command == "contacts":
                 print(all_contacts(args, book))
             elif command == "add-birthday":
                 print(add_birthday(args, book))
@@ -54,6 +59,10 @@ def run_bot():
                 print(show_birthday(args, book))
             elif command == "birthdays":
                 print(birthdays(book))
+            elif command == "add-email":
+                print(add_email(args, book))
+            elif command == "show-email":
+                print(show_email(args, book))
             elif command == "add-note":
                 print(add_note(args, book))
             elif command == "delete-note":

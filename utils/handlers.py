@@ -2,7 +2,8 @@ from models import Record
 from utils.table_provider import (
     get_note_table,
     get_record_table,
-    get_command_table
+    get_command_table,
+    get_birthday_table
 )
 from .decorators import input_error
 from .parser import parse_contact_fields
@@ -128,12 +129,7 @@ def birthdays(args, book):
     if not upcoming_birthdays:
         return f"No upcoming birthdays found in the next {days} days."
 
-    messages = [
-        f"{birthday['name']}'s upcoming birthday will be on {birthday['congratulation_date']}"
-        for birthday in upcoming_birthdays
-    ]
-
-    return "\n".join(messages)
+    return get_birthday_table(upcoming_birthdays)
 
 
 @input_error

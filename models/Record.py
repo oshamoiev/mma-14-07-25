@@ -75,6 +75,15 @@ class Record:
         else:
             self.birthday = Birthday(new_date)
 
+    def show_birthday(self):
+        """
+        Show the birthday for the record.
+
+        Returns:
+            Birthday object if set, otherwise None.
+        """
+        return self.birthday
+
     def add_email(self, email):
         """
         Add or update the email for the record.

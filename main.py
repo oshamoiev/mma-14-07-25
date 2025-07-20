@@ -23,7 +23,8 @@ from utils import (
     change_note,
     tag_note,
     get_help,
-    autocomplete
+    exit_command,
+    autocomplete,
 )
 
 CommandRow = namedtuple("CommandRow", ["command", "category", "description", "function"])
@@ -32,9 +33,9 @@ COMMANDS = [
     CommandRow("help", "General", "Show this help message",
                lambda args, book, console: console.print(get_help(COMMANDS))),
     CommandRow("exit", "General", "Save book and exit",
-               lambda args, book, console: (_ for _ in ()).throw(KeyboardInterrupt)),
+               lambda args, book, console: exit_command()),
     CommandRow("close", "General", "Save book and exit",
-               lambda args, book, console: (_ for _ in ()).throw(KeyboardInterrupt)),
+               lambda args, book, console: exit_command()),
     CommandRow("add-contact", "Contacts", "Add contact <name> <phone> [birthday] [email]",
                lambda args, book, console: print(add_contact(args, book))),
     CommandRow("change-contact", "Contacts", "Change phone <name> <phone> [birthday] [email]",
@@ -71,7 +72,7 @@ COMMANDS = [
                lambda args, book, console: console.print(find_notes(args, book))),
 ]
 
-command_map = {row.command: row.function for row in COMMANDS}
+command_to_function_map = {row.command: row.function for row in COMMANDS}
 
 
 def run_bot():
@@ -92,9 +93,10 @@ def run_bot():
 
             command, *args = parsed
 
-            func = command_map.get(command)
-            if func:
-                func(args, book, console)
+            function = command_to_function_map.get(command)
+
+            if function:
+                function(args, book, console)
             else:
                 print("Invalid command.")
     except KeyboardInterrupt:

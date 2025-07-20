@@ -117,10 +117,10 @@ def show_birthday(args, book):
 
 @input_error
 def birthdays(args, book):
-    days = 7  
+    days = 7
     if args and args[0].isdigit():
         days = int(args[0])
-    
+
     if not book:
         return "No contacts found."
 
@@ -233,12 +233,18 @@ def tag_note(args, book):
 
     return f"Tag '{tag}' has been added to note with Key = '{key}'."
 
+
 def get_help(command_rows):
     return get_command_table(command_rows)
+
 
 def check_args(args, *fields):
     if len(args) < len(fields):
         raise ValueError(f"Please provide: {', '.join(fields)}.")
+
+
+def exit_command():
+    raise KeyboardInterrupt
 
 
 def get_record(book, name):

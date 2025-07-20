@@ -36,9 +36,6 @@ class Record:
             return False
 
     def add_birthday(self, new_date):
-        self.birthday = Birthday(new_date)
-
-    def add_birthday(self, new_date):
         if isinstance(new_date, Birthday):
             self.birthday = new_date
         else:

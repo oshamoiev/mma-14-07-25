@@ -47,8 +47,6 @@ def run_bot():
                 book.save_to_file()
                 print("Good bye!")
                 break
-            elif command == "hello":
-                print("How can I help you?")
             elif command == "add-contact":
                 print(add_contact(args, book))
             elif command == "change-contact":

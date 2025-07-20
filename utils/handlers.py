@@ -10,7 +10,7 @@ from .parser import parse_contact_fields
 
 @input_error
 def add_contact(args, book):
-    check_args(args, "name")
+    check_args(args, "name, phone")
 
     name, *fields = args
     record = book.find(name)
@@ -42,7 +42,7 @@ def add_contact(args, book):
 
 @input_error
 def change_contact(args, book):
-    check_args(args, "name")
+    check_args(args, "name", "phone")
 
     name, *fields = args
     record = get_record(book, name)

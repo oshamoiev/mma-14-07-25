@@ -11,9 +11,6 @@ class Record:
         self.email = None
         self.birthday = None
 
-    def get_phone(self):
-        return "; ".join(phone.value for phone in self.phones) if self.phones else "-"
-
     def add_phone(self, new_phone):
         if isinstance(new_phone, Phone):
             phone_obj = new_phone

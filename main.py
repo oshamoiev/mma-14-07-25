@@ -26,35 +26,56 @@ from utils import (
     autocomplete
 )
 
-CommandRow = namedtuple("CommandRow", ["category", "command", "description"])
+CommandRow = namedtuple("CommandRow", ["command", "category", "description", "function"])
 
 COMMANDS = [
-    CommandRow("General", "help", "Show this help message"),
-    CommandRow("General", "exit", "Save book and exit"),
-    CommandRow("General", "close", "Save book and exit"),
-    CommandRow("Contacts", "add-contact", "Add contact <name> <phone> [birthday] [email]"),
-    CommandRow("Contacts", "change-contact", "Change phone <name> <phone> [birthday] [email]"),
-    CommandRow("Contacts", "remove-contact", "Remove contact <name>"),
-    CommandRow("Contacts", "contact", "Show contact <name>"),
-    CommandRow("Contacts", "contacts", "Show all contacts"),
-    CommandRow("Contacts", "add-birthday", "Add birthday <name> <DD.MM.YYYY>"),
-    CommandRow("Contacts", "show-birthday", "Show birthday <name>"),
-    CommandRow("Contacts", "birthdays [days]", "Show birthdays in next N days (default 7)"),
-    CommandRow("Contacts", "add-email", "Add email <name> <email>"),
-    CommandRow("Contacts", "show-email", "Show email <name>"),
-    CommandRow("Notes", "add-note", "Add a new note"),
-    CommandRow("Notes", "delete-note", "Delete note <note key>"),
-    CommandRow("Notes", "change-note", "Edit note <note key> <text>"),
-    CommandRow("Notes", "note", "Show note <note key>"),
-    CommandRow("Notes", "notes", "Show all notes"),
-    CommandRow("Notes", "tag-note", "Tag note <note key> <tag>"),
-    CommandRow("Notes", "find-notes", "Find notes <one or more keywords>"),
+    CommandRow("help", "General", "Show this help message",
+               lambda args, book, console: console.print(get_help(COMMANDS))),
+    CommandRow("exit", "General", "Save book and exit",
+               lambda args, book, console: (_ for _ in ()).throw(KeyboardInterrupt)),
+    CommandRow("close", "General", "Save book and exit",
+               lambda args, book, console: (_ for _ in ()).throw(KeyboardInterrupt)),
+    CommandRow("add-contact", "Contacts", "Add contact <name> <phone> [birthday] [email]",
+               lambda args, book, console: print(add_contact(args, book))),
+    CommandRow("change-contact", "Contacts", "Change phone <name> <phone> [birthday] [email]",
+               lambda args, book, console: print(change_contact(args, book))),
+    CommandRow("remove-contact", "Contacts", "Remove contact <name>",
+               lambda args, book, console: print(remove_contact(args, book))),
+    CommandRow("contact", "Contacts", "Show contact <name>",
+               lambda args, book, console: console.print(get_contact(args, book))),
+    CommandRow("contacts", "Contacts", "Show all contacts",
+               lambda args, book, console: console.print(get_contacts(args, book))),
+    CommandRow("add-birthday", "Contacts", "Add birthday <name> <DD.MM.YYYY>",
+               lambda args, book, console: print(add_birthday(args, book))),
+    CommandRow("show-birthday", "Contacts", "Show birthday <name>",
+               lambda args, book, console: print(show_birthday(args, book))),
+    CommandRow("birthdays", "Contacts", "Show birthdays in next N days (default 7)",
+               lambda args, book, console: print(birthdays(args, book))),
+    CommandRow("add-email", "Contacts", "Add email <name> <email>",
+               lambda args, book, console: print(add_email(args, book))),
+    CommandRow("show-email", "Contacts", "Show email <name>",
+               lambda args, book, console: print(show_email(args, book))),
+    CommandRow("add-note", "Notes", "Add a new note",
+               lambda args, book, console: print(add_note(args, book))),
+    CommandRow("delete-note", "Notes", "Delete note <note key>",
+               lambda args, book, console: print(delete_note(args, book))),
+    CommandRow("change-note", "Notes", "Edit note <note key> <text>",
+               lambda args, book, console: print(change_note(args, book))),
+    CommandRow("note", "Notes", "Show note <note key>",
+               lambda args, book, console: console.print(get_note(args, book))),
+    CommandRow("notes", "Notes", "Show all notes",
+               lambda args, book, console: console.print(get_all_notes(book))),
+    CommandRow("tag-note", "Notes", "Tag note <note key> <tag>",
+               lambda args, book, console: console.print(tag_note(args, book))),
+    CommandRow("find-notes", "Notes", "Find notes <one or more keywords>",
+               lambda args, book, console: console.print(find_notes(args, book))),
 ]
+
+command_map = {row.command: row.function for row in COMMANDS}
 
 
 def run_bot():
     book = AddressBook.load_or_create_book()
-
     autocomplete.setup_autocomplete()
     console = Console()
 
@@ -68,48 +89,12 @@ def run_bot():
 
             if not parsed:
                 continue
+
             command, *args = parsed
 
-            if command in ["close", "exit"]:
-                book.save_to_file()
-                print("Good bye!")
-                break
-            elif command == "add-contact":
-                print(add_contact(args, book))
-            elif command == "change-contact":
-                print(change_contact(args, book))
-            elif command == "remove-contact":
-                print(remove_contact(args, book))
-            elif command == "contact":
-                console.print(get_contact(args, book))
-            elif command == "contacts":
-                console.print(get_contacts(args, book))
-            elif command == "add-birthday":
-                print(add_birthday(args, book))
-            elif command == "show-birthday":
-                print(show_birthday(args, book))
-            elif command == "birthdays":
-                print(birthdays(args, book))
-            elif command == "add-email":
-                print(add_email(args, book))
-            elif command == "show-email":
-                print(show_email(args, book))
-            elif command == "add-note":
-                print(add_note(args, book))
-            elif command == "delete-note":
-                print(delete_note(args, book))
-            elif command == "change-note":
-                print(change_note(args, book))
-            elif command == "find-notes":
-                console.print(find_notes(args, book))
-            elif command == "note":
-                console.print(get_note(args, book))
-            elif command == "notes":
-                console.print(get_all_notes(book))
-            elif command == "tag-note":
-                console.print(tag_note(args, book))
-            elif command == "help":
-                console.print(get_help(COMMANDS))
+            func = command_map.get(command)
+            if func:
+                func(args, book, console)
             else:
                 print("Invalid command.")
     except KeyboardInterrupt:

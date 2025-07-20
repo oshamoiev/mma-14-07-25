@@ -35,11 +35,11 @@ def get_record_table(records):
 
 def get_command_table(command_rows):
     table = Table(title="Available Commands", show_lines=True, padding=(0, 1))
-    table.add_column("Category", style="cyan bold", no_wrap=True)
     table.add_column("Command", style="magenta", no_wrap=True)
+    table.add_column("Category", style="cyan bold", no_wrap=True)
     table.add_column("Description", style="green")
 
     for command_row in command_rows:
-        table.add_row(command_row.category, command_row.command, command_row.description)
+        table.add_row(command_row.command, command_row.category, command_row.description)
 
     return table

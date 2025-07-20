@@ -72,16 +72,17 @@ COMMANDS = [
                lambda args, book, console: console.print(find_notes(args, book))),
 ]
 
-command_to_function_map = {row.command: row.function for row in COMMANDS}
-
-
 def run_bot():
     book = AddressBook.load_or_create_book()
-    autocomplete.setup_autocomplete()
+
+    commands = [row.command for row in COMMANDS]
+    autocomplete.setup_autocomplete(commands)
     console = Console()
 
     print("\n   Welcome to the assistant bot! Press [`Tab`] to autocomplete commands.")
     console.print(get_help(COMMANDS))
+
+    command_to_function_map = {row.command: row.function for row in COMMANDS}
 
     try:
         while True:

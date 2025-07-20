@@ -1,3 +1,4 @@
+
 from datetime import datetime, timedelta
 
 def upcoming_birthdays(book, days=7):

@@ -25,4 +25,5 @@ from .table_provider import (
     get_note_table,
     get_record_table,
     get_command_table,
+    get_birthday_table,
 )

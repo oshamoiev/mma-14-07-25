@@ -43,3 +43,13 @@ def get_command_table(command_rows):
         table.add_row(command_row.command, command_row.category, command_row.description)
 
     return table
+
+def get_birthday_table(upcoming_birthdays):
+    table = Table(title="Upcoming Birthdays", show_lines=True, padding=(0, 1))
+    table.add_column("Name", style="cyan", no_wrap=True)
+    table.add_column("Congratulation Date", style="magenta", no_wrap=True)
+
+    for birthday in upcoming_birthdays:
+        table.add_row(birthday["name"], birthday["congratulation_date"])
+
+    return table

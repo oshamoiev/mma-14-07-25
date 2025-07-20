@@ -1,13 +1,16 @@
 from models import Record
-from utils.table_provider import get_note_table, get_record_table, get_help_table
+from utils.table_provider import (
+    get_note_table,
+    get_record_table,
+    get_command_table
+)
 from .decorators import input_error
 from .parser import parse_contact_fields
-from rich.console import Console
 
 
 @input_error
 def add_contact(args, book):
-    check_args(args, "name")
+    check_args(args, "name, phone")
 
     name, *fields = args
     record = book.find(name)
@@ -39,7 +42,7 @@ def add_contact(args, book):
 
 @input_error
 def change_contact(args, book):
-    check_args(args, "name")
+    check_args(args, "name", "phone")
 
     name, *fields = args
     record = get_record(book, name)
@@ -114,10 +117,10 @@ def show_birthday(args, book):
 
 @input_error
 def birthdays(args, book):
-    days = 7  
+    days = 7
     if args and args[0].isdigit():
         days = int(args[0])
-    
+
     if not book:
         return "No contacts found."
 
@@ -231,9 +234,17 @@ def tag_note(args, book):
     return f"Tag '{tag}' has been added to note with Key = '{key}'."
 
 
+def get_help(command_rows):
+    return get_command_table(command_rows)
+
+
 def check_args(args, *fields):
     if len(args) < len(fields):
         raise ValueError(f"Please provide: {', '.join(fields)}.")
+
+
+def exit_command():
+    raise KeyboardInterrupt
 
 
 def get_record(book, name):
@@ -243,9 +254,3 @@ def get_record(book, name):
         raise KeyError(f"No contact found for name: {name}.")
 
     return record
-
-
-def help_command(*args):
-    console = Console()
-    console.print(get_help_table())
-    return ""

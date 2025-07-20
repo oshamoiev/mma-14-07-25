@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from rich.console import Console
 
 from models import AddressBook
@@ -20,18 +22,68 @@ from utils import (
     find_notes,
     change_note,
     tag_note,
-    help_command,
-    autocomplete
+    get_help,
+    exit_command,
+    autocomplete,
 )
 
+CommandRow = namedtuple("CommandRow", ["command", "category", "description", "function"])
+
+COMMANDS = [
+    CommandRow("help", "General", "Show this help message",
+               lambda args, book, console: console.print(get_help(COMMANDS))),
+    CommandRow("exit", "General", "Save book and exit",
+               lambda args, book, console: exit_command()),
+    CommandRow("close", "General", "Save book and exit",
+               lambda args, book, console: exit_command()),
+    CommandRow("add-contact", "Contacts", "Add contact <name> <phone> [birthday] [email]",
+               lambda args, book, console: print(add_contact(args, book))),
+    CommandRow("change-contact", "Contacts", "Change phone <name> <phone> [birthday] [email]",
+               lambda args, book, console: print(change_contact(args, book))),
+    CommandRow("remove-contact", "Contacts", "Remove contact <name>",
+               lambda args, book, console: print(remove_contact(args, book))),
+    CommandRow("contact", "Contacts", "Show contact <name>",
+               lambda args, book, console: console.print(get_contact(args, book))),
+    CommandRow("contacts", "Contacts", "Show all contacts",
+               lambda args, book, console: console.print(get_contacts(args, book))),
+    CommandRow("add-birthday", "Contacts", "Add birthday <name> <DD.MM.YYYY>",
+               lambda args, book, console: print(add_birthday(args, book))),
+    CommandRow("show-birthday", "Contacts", "Show birthday <name>",
+               lambda args, book, console: print(show_birthday(args, book))),
+    CommandRow("birthdays", "Contacts", "Show birthdays in next N days (default 7)",
+               lambda args, book, console: print(birthdays(args, book))),
+    CommandRow("add-email", "Contacts", "Add email <name> <email>",
+               lambda args, book, console: print(add_email(args, book))),
+    CommandRow("show-email", "Contacts", "Show email <name>",
+               lambda args, book, console: print(show_email(args, book))),
+    CommandRow("add-note", "Notes", "Add a new note",
+               lambda args, book, console: print(add_note(args, book))),
+    CommandRow("delete-note", "Notes", "Delete note <note key>",
+               lambda args, book, console: print(delete_note(args, book))),
+    CommandRow("change-note", "Notes", "Edit note <note key> <text>",
+               lambda args, book, console: print(change_note(args, book))),
+    CommandRow("note", "Notes", "Show note <note key>",
+               lambda args, book, console: console.print(get_note(args, book))),
+    CommandRow("notes", "Notes", "Show all notes",
+               lambda args, book, console: console.print(get_all_notes(book))),
+    CommandRow("tag-note", "Notes", "Tag note <note key> <tag>",
+               lambda args, book, console: console.print(tag_note(args, book))),
+    CommandRow("find-notes", "Notes", "Find notes <one or more keywords>",
+               lambda args, book, console: console.print(find_notes(args, book))),
+]
 
 def run_bot():
-    autocomplete.setup_autocomplete()
-    console = Console()
     book = AddressBook.load_or_create_book()
+
+    commands = [row.command for row in COMMANDS]
+    autocomplete.setup_autocomplete(commands)
+    console = Console()
+
     print("\n   Welcome to the assistant bot! Press [`Tab`] to autocomplete commands.")
-    print(help_command())
-    
+    console.print(get_help(COMMANDS))
+
+    command_to_function_map = {row.command: row.function for row in COMMANDS}
+
     try:
         while True:
             user_input = input("Enter a command: ")
@@ -39,50 +91,13 @@ def run_bot():
 
             if not parsed:
                 continue
+
             command, *args = parsed
 
-            if command in ["close", "exit"]:
-                book.save_to_file()
-                print("Good bye!")
-                break
-            elif command == "hello":
-                print("How can I help you?")
-            elif command == "add-contact":
-                print(add_contact(args, book))
-            elif command == "change-contact":
-                print(change_contact(args, book))
-            elif command == "remove-contact":
-                print(remove_contact(args, book))
-            elif command == "contact":
-                console.print(get_contact(args, book))
-            elif command == "contacts":
-                console.print(get_contacts(args, book))
-            elif command == "add-birthday":
-                print(add_birthday(args, book))
-            elif command == "show-birthday":
-                print(show_birthday(args, book))
-            elif command == "birthdays":
-                print(birthdays(args, book))
-            elif command == "add-email":
-                print(add_email(args, book))
-            elif command == "show-email":
-                print(show_email(args, book))
-            elif command == "add-note":
-                print(add_note(args, book))
-            elif command == "delete-note":
-                print(delete_note(args, book))
-            elif command == "change-note":
-                print(change_note(args, book))
-            elif command == "find-notes":
-                console.print(find_notes(args, book))
-            elif command == "note":
-                console.print(get_note(args, book))
-            elif command == "notes":
-                console.print(get_all_notes(book))
-            elif command == "tag-note":
-                console.print(tag_note(args, book))
-            elif command == "help":
-                print(help_command())
+            function = command_to_function_map.get(command)
+
+            if function:
+                function(args, book, console)
             else:
                 print("Invalid command.")
     except KeyboardInterrupt:

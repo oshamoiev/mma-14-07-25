@@ -16,7 +16,7 @@ from .handlers import (
     find_notes,
     change_note,
     tag_note,
-    get_help_command,
+    get_help,
 )
 from .parser import parse_input
 from .get_birthdays import upcoming_birthdays

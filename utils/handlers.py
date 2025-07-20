@@ -233,8 +233,8 @@ def tag_note(args, book):
 
     return f"Tag '{tag}' has been added to note with Key = '{key}'."
 
-def get_help_command():
-    return get_command_table()
+def get_help(command_rows):
+    return get_command_table(command_rows)
 
 def check_args(args, *fields):
     if len(args) < len(fields):

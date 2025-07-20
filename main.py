@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from rich.console import Console
 
 from models import AddressBook
@@ -20,9 +22,34 @@ from utils import (
     find_notes,
     change_note,
     tag_note,
-    get_help_command,
+    get_help,
     autocomplete
 )
+
+CommandRow = namedtuple("CommandRow", ["category", "command", "description"])
+
+COMMANDS = [
+    CommandRow("General", "help", "Show this help message"),
+    CommandRow("General", "exit", "Save book and exit"),
+    CommandRow("General", "close", "Save book and exit"),
+    CommandRow("Contacts", "add-contact", "Add contact <name> <phone> [birthday] [email]"),
+    CommandRow("Contacts", "change-contact", "Change phone <name> <phone> [birthday] [email]"),
+    CommandRow("Contacts", "remove-contact", "Remove contact <name>"),
+    CommandRow("Contacts", "contact", "Show contact <name>"),
+    CommandRow("Contacts", "contacts", "Show all contacts"),
+    CommandRow("Contacts", "add-birthday", "Add birthday <name> <DD.MM.YYYY>"),
+    CommandRow("Contacts", "show-birthday", "Show birthday <name>"),
+    CommandRow("Contacts", "birthdays [days]", "Show birthdays in next N days (default 7)"),
+    CommandRow("Contacts", "add-email", "Add email <name> <email>"),
+    CommandRow("Contacts", "show-email", "Show email <name>"),
+    CommandRow("Notes", "add-note", "Add a new note"),
+    CommandRow("Notes", "delete-note", "Delete note <note key>"),
+    CommandRow("Notes", "change-note", "Edit note <note key> <text>"),
+    CommandRow("Notes", "note", "Show note <note key>"),
+    CommandRow("Notes", "notes", "Show all notes"),
+    CommandRow("Notes", "tag-note", "Tag note <note key> <tag>"),
+    CommandRow("Notes", "find-notes", "Find notes <one or more keywords>"),
+]
 
 
 def run_bot():
@@ -32,8 +59,8 @@ def run_bot():
     console = Console()
 
     print("\n   Welcome to the assistant bot! Press [`Tab`] to autocomplete commands.")
-    console.print(get_help_command())
-    
+    console.print(get_help(COMMANDS))
+
     try:
         while True:
             user_input = input("Enter a command: ")
@@ -82,7 +109,7 @@ def run_bot():
             elif command == "tag-note":
                 console.print(tag_note(args, book))
             elif command == "help":
-                console.print(get_help_command())
+                console.print(get_help(COMMANDS))
             else:
                 print("Invalid command.")
     except KeyboardInterrupt:

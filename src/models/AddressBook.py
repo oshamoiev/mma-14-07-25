@@ -1,4 +1,5 @@
 import pickle
+from pathlib import Path
 from collections import UserDict
 
 from models.NoteBook import NoteBook
@@ -11,7 +12,7 @@ class AddressBook(UserDict):
     Contacts are stored in a dictionary, and notes are managed via an embedded NoteBook.
     """
 
-    FILENAME = "addressbook.pkl"
+    FILENAME = Path.home() / "address-book.pkl"
 
     def __init__(self):
         """

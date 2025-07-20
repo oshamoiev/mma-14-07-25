@@ -20,17 +20,19 @@ from utils import (
     find_notes,
     change_note,
     tag_note,
-    help_command,
+    get_help_command,
     autocomplete
 )
 
 
 def run_bot():
+    book = AddressBook.load_or_create_book()
+
     autocomplete.setup_autocomplete()
     console = Console()
-    book = AddressBook.load_or_create_book()
+
     print("\n   Welcome to the assistant bot! Press [`Tab`] to autocomplete commands.")
-    print(help_command())
+    console.print(get_help_command())
     
     try:
         while True:
@@ -82,7 +84,7 @@ def run_bot():
             elif command == "tag-note":
                 console.print(tag_note(args, book))
             elif command == "help":
-                print(help_command())
+                console.print(get_help_command())
             else:
                 print("Invalid command.")
     except KeyboardInterrupt:

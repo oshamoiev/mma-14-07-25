@@ -1,8 +1,11 @@
 from models import Record
-from utils.table_provider import get_note_table, get_record_table, get_help_table
+from utils.table_provider import (
+    get_note_table,
+    get_record_table,
+    get_command_table
+)
 from .decorators import input_error
 from .parser import parse_contact_fields
-from rich.console import Console
 
 
 @input_error
@@ -230,6 +233,8 @@ def tag_note(args, book):
 
     return f"Tag '{tag}' has been added to note with Key = '{key}'."
 
+def get_help_command():
+    return get_command_table()
 
 def check_args(args, *fields):
     if len(args) < len(fields):
@@ -243,9 +248,3 @@ def get_record(book, name):
         raise KeyError(f"No contact found for name: {name}.")
 
     return record
-
-
-def help_command(*args):
-    console = Console()
-    console.print(get_help_table())
-    return ""

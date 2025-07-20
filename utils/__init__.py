@@ -16,11 +16,12 @@ from .handlers import (
     find_notes,
     change_note,
     tag_note,
-    help_command,
+    get_help_command,
 )
 from .parser import parse_input
 from .get_birthdays import upcoming_birthdays
 from .table_provider import (
     get_note_table,
-    get_record_table
+    get_record_table,
+    get_command_table,
 )

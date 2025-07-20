@@ -32,7 +32,7 @@ def get_record_table(records):
 
     return table
 
-def get_help_table():
+def get_command_table():
     table = Table(title="Available Commands", show_lines=True, padding=(0, 1))
     table.add_column("Category", style="cyan bold", no_wrap=True)
     table.add_column("Command", style="magenta", no_wrap=True)

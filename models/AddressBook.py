@@ -33,8 +33,8 @@ class AddressBook(UserDict):
         with open(AddressBook.FILENAME, "wb") as file:
             pickle.dump(self, file)
 
-    def get_upcoming_birthdays(self):
-        return upcoming_birthdays(self)
+    def get_upcoming_birthdays(self, days=7):  
+        return upcoming_birthdays(self, days)
 
     def add_note(self, key, content):
         self.note_book.add_note(key, content)

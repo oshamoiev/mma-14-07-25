@@ -21,13 +21,15 @@ from utils import (
     change_note,
     tag_note,
     help_command,
+    autocomplete
 )
 
 
 def run_bot():
+    autocomplete.setup_autocomplete()
     console = Console()
     book = AddressBook.load_or_create_book()
-    print("Welcome to the assistant bot!")
+    print("\n   Welcome to the assistant bot! Press [`Tab`] to autocomplete commands.")
     print(help_command())
     
     try:
@@ -60,7 +62,7 @@ def run_bot():
             elif command == "show-birthday":
                 print(show_birthday(args, book))
             elif command == "birthdays":
-                print(birthdays(book))
+                print(birthdays(args, book))
             elif command == "add-email":
                 print(add_email(args, book))
             elif command == "show-email":

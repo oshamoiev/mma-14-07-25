@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta
 
-
-def upcoming_birthdays(book):
+def upcoming_birthdays(book, days=7):
     today = datetime.today().date()
-    next_week = today + timedelta(days=6)
+    end_date = today + timedelta(days=days - 1)  
+    
     upcoming = []
 
     for name, record in book.data.items():
@@ -16,13 +16,11 @@ def upcoming_birthdays(book):
             elif birthday_this_year.weekday() == 6:
                 birthday_this_year += timedelta(days=1)
 
-            if today <= birthday_this_year <= next_week:
+            if today <= birthday_this_year <= end_date:
                 upcoming.append(
                     {
                         "name": record.name.value,
-                        "congratulation_date": datetime.strftime(
-                            birthday_this_year, "%A, %B %d"
-                        ),
+                        "congratulation_date": birthday_this_year.strftime("%A, %B %d"),
                     }
                 )
         except (AttributeError, ValueError):

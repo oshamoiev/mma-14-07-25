@@ -113,6 +113,9 @@ def show_birthday(args, book):
     record = get_record(book, name)
 
     birthday = record.show_birthday()
+    if not birthday:
+        return f"{name} has no birthday date set."
+
     return f"{name}'s birthday date: {birthday}"
 
 

@@ -16,4 +16,4 @@ dependencies = [
 ]
 
 [project.scripts]
-address_book = "main:run_bot"
+mybook = "main:run_bot"

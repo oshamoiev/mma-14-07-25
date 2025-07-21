@@ -6,9 +6,16 @@
 
 ## 🚀 Installation
 
+0. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/oshamoiev/mma-14-07-25.git
+   ```
+
 1. **Create a virtual environment:**
 
    ```bash
+   cd mma-14-07-25   
    python3 -m venv .venv
    ```
 

@@ -30,7 +30,7 @@
 To launch the AddressBook app, simply run:
 
 ```bash
-address_book
+mybook
 ```
 
 ---

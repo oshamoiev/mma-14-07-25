@@ -12,5 +12,9 @@ def get_completer(commands):
 
 
 def setup_autocomplete(commands):
-    readline.parse_and_bind("tab: complete")
     readline.set_completer(get_completer(commands))
+    
+    if "libedit" in readline.__doc__:
+        readline.parse_and_bind("bind ^I rl_complete")
+    else:
+        readline.parse_and_bind("tab: complete")

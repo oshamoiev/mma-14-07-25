@@ -40,7 +40,7 @@ COMMANDS = [
                lambda args, book, console: print(add_contact(args, book))),
     CommandRow("change-contact", "Contacts", "Change phone <name> <phone> [birthday] [email]",
                lambda args, book, console: print(change_contact(args, book))),
-    CommandRow("remove-contact", "Contacts", "Remove contact <name>",
+    CommandRow("delete-contact", "Contacts", "Delete contact <name>",
                lambda args, book, console: print(remove_contact(args, book))),
     CommandRow("contact", "Contacts", "Show contact <name>",
                lambda args, book, console: console.print(get_contact(args, book))),
